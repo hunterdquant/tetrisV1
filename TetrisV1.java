@@ -25,7 +25,8 @@ public class TetrisV1 {
         window.pack();
         window.setVisible(true);
 
-        for (int i = 0; i < 20; i++) tetris.testTokens();
+        try{Thread.sleep(1000); } catch (Exception ignore) {}
+        tetris.fallingToken();
     }
 }
 

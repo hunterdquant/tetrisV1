@@ -48,13 +48,6 @@ public class Tetris extends JPanel {
         gameBoard[x][y] = 1;
     }
 
-    //Erases cell at x and y
-    public void eraseCell(int x, int y) {
-        
-        //Sets cell to empty
-        gameBoard[x][y] = 0;
-    }
-
     //Draws a token to the screen
     public void drawToken(int x, int y, int [] xArray, int [] yArray) {
     
@@ -63,6 +56,25 @@ public class Tetris extends JPanel {
             drawCell(x+xArray[i], y+yArray[i]);
         }
     }
+
+
+
+    //Erases cell at x and y
+    public void eraseCell(int x, int y) {
+        
+        //Sets cell to empty
+        gameBoard[x][y] = 0;
+    }
+
+    public void eraseToken(int x, int y, int [] xArray, int [] yArray) {
+        
+        for (int i = 0; i < 4; i++) {
+
+            eraseCell(x+xArray[i], y+yArray[i]);
+        }
+    }
+
+
 
     public boolean isPosValid(int x, int y, int tokNum, int rotNum) {
         
@@ -87,6 +99,55 @@ public class Tetris extends JPanel {
         }
 
         return true;
+    }
+
+    public void fallingToken() {
+    
+        int x = 5;
+        int y = 0;
+        int tokNum, rotNum;
+        
+        //Loop till you have a valid position
+        while(true) {
+        
+            tokNum = (int) (7*Math.random());
+            rotNum = (int) (4*Math.random());
+
+            if (isPosValid(x, y, tokNum, rotNum)) break;
+        }
+        
+        //Get the data for the token
+        int [] xArray = xRotations[tokNum][rotNum];
+        int [] yArray = yRotations[tokNum][rotNum];
+        
+        //Draw and repaint
+        drawToken(x, y, xArray, yArray);
+        repaint();
+
+        boolean hitFloor = false;
+        
+        //While you haven't hit the floor
+        while (!hitFloor) {
+        
+            try{Thread.sleep(500); } catch (Exception ignore) {}
+
+            //Erase the token
+            eraseToken(x, y, xArray, yArray);
+            repaint();
+
+            //Increase y so it's falling
+            y += 1;
+
+            if(!isPosValid(x, y, tokNum, rotNum)) { 
+                
+                y -= 1; 
+                hitFloor = true; 
+            }
+            
+            //Re-draw
+            drawToken(x, y, xArray, yArray);
+            repaint();
+        }
     }
 
     public void testTokens() {
