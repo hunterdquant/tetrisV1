@@ -21,9 +21,9 @@ public class Tetris extends JPanel {
      public void drawCell(Graphics g, int x, int y) {
      
          g.setColor(Color.BLACK);
-         g.fillRect(x, y, 24, 24);
+         g.fillRect(x*24, y*24, 24, 24);
          g.setColor(Color.RED);
-         g.fillRect(x+1, y+1, 22, 22);
+         g.fillRect(x*24+1, y*24+1, 22, 22);
      }
      
      //Draws a red cell with a black border
@@ -31,6 +31,9 @@ public class Tetris extends JPanel {
         
          super.paint(g);
          drawCell(g, 0, 0);
+         drawCell(g, 0, 1);
+         drawCell(g, 1, 0);
+         drawCell(g, 2, 0);
      }
 }
 
