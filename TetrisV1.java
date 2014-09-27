@@ -24,6 +24,8 @@ public class TetrisV1 {
         window.add(tetris);
         window.pack();
         window.setVisible(true);
+
+        for (int i = 0; i < 20; i++) tetris.testTokens();
     }
 }
 

@@ -39,31 +39,19 @@ public class Tetris extends JPanel {
         //Set up window properties
         this.setPreferredSize(new java.awt.Dimension(640, 480));
         this.setBackground(Color.GREEN);
-        
-        drawToken(0, 0, xRotations[0][0], yRotations[0][0]);
-        
-        drawToken(0, 5, xRotations[1][0], yRotations[1][0]);
-
-        drawToken(0, 10, xRotations[2][0], yRotations[2][0]);
-        
-        drawToken(0, 15, xRotations[3][0], yRotations[3][0]);
-
-        drawToken(5, 0, xRotations[4][0], yRotations[4][0]);
-        
-        drawToken(5, 5, xRotations[5][0], yRotations[5][0]);
-
-        drawToken(5, 10, xRotations[6][0], yRotations[6][0]);
     }
 
     //Draws square cell to screen
     public void drawCell(int x, int y) {
-
+        
+        //Sets cell to occupied
         gameBoard[x][y] = 1;
     }
 
     //Erases cell at x and y
     public void eraseCell(int x, int y) {
-
+        
+        //Sets cell to empty
         gameBoard[x][y] = 0;
     }
 
@@ -76,14 +64,63 @@ public class Tetris extends JPanel {
         }
     }
 
+    public boolean isPosValid(int x, int y, int tokNum, int rotNum) {
+        
+        //Arrays for checking valid positions
+        int [] xArray = xRotations[tokNum][rotNum];
+        int [] yArray = yRotations[tokNum][rotNum];
+        
+        for (int i = 0; i < 4; i++) {
+           
+            //Positions to check 
+            int xIndex = x+xArray[i];
+            int yIndex = y+yArray[i];
+            
+            //Check range
+            if (xIndex < 0) return false;
+            if (xIndex >= 10) return false;
+            if (yIndex < 0) return false;
+            if (yIndex >= 20) return false;
+            
+            //Check to see if space is occupied
+            if (gameBoard[xIndex][yIndex] == 1) return false;
+        }
+
+        return true;
+    }
+
+    public void testTokens() {
+
+        try {Thread.sleep(1000);} catch (Exception ignore) {}
+        
+        //Must be initialize out of scope of the while loop
+        int x, y, tokNum, rotNum;
+
+        while (true) {
+
+            //Position to be placed
+            x = (int) (10*Math.random());
+            y = (int) (20*Math.random());
+
+            //Token number/rotation
+            tokNum = (int) (7*Math.random());
+            rotNum = (int) (4*Math.random());
+
+            if (isPosValid(x, y, tokNum, rotNum)) break;
+        }
+
+        drawToken(x, y, xRotations[tokNum][rotNum], yRotations[tokNum][rotNum]);
+        repaint();
+    }
+
     //Draws a red cell with a black border
     public void paint(Graphics g) {
 
         super.paint(g);
         
         //Fill the board with black if 0, red if 1
-        for(int x = 0; x < 10; x++) {
-            for (int y = 0; y < 20; y++) {
+        for(int x = 0; x < gameBoard.length; x++) {
+            for (int y = 0; y < gameBoard[0].length; y++) {
                 
                 //Draw red
                 if (gameBoard[x][y] == 1) {
