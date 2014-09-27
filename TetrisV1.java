@@ -5,18 +5,22 @@
 // Description: plays the game of Tetris
 //======================================================\\
 
+//Java graphics library
 import javax.swing.*;
 
 public class TetrisV1 {
   
     public static void main(String [] args) {
         
+        //Create new window
         JFrame window = new JFrame("TetrisV1");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+        
+        //Initialize Tetris object
         Tetris tetris = new Tetris();
         tetris.initialize();
-
+        
+        //Add Tetris object to the window
         window.add(tetris);
         window.pack();
         window.setVisible(true);
