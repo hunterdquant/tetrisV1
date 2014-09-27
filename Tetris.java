@@ -11,6 +11,17 @@ import java.awt.*;
 public class Tetris extends JPanel {
 
     private int [][] gameBoard = new int[10][20];   
+    
+    //Rotations for each Token
+    //USE: [Token][Rotation]
+    private int [][][] xRotations = {
+        { {0, 0, 1, 2}, {0, 0, 0, 1}, {2, 0, 1, 2}, {0, 1, 1, 1} },
+        { {0, 0, 1, 1}, {1, 2, 0, 1}, {0, 0, 1, 1}, {1, 2, 0, 1} }
+    };
+    private int [][][] yRotations = {
+        { {0, 1, 0, 0}, {0, 1, 2, 2}, {0, 1, 1, 1}, {0, 0, 1, 2} },
+        { {0, 1, 1, 2}, {0, 0, 1, 1}, {0, 1, 1, 2}, {0, 0, 1, 1} }
+    };
 
     //Initializes the JPanel   
     public void initialize() {
@@ -18,29 +29,22 @@ public class Tetris extends JPanel {
         //Set up window properties
         this.setPreferredSize(new java.awt.Dimension(640, 480));
         this.setBackground(Color.GREEN);
+        
+        drawToken(0, 0, xRotations[0][0], yRotations[0][0]);
+        
+        drawToken(0, 5, xRotations[0][1], yRotations[0][1]);
 
-        //Relative position arrays and rotation arrays
-        int [] xArray = {0, 0, 1, 2};
-        int [] yArray = {0, 1, 0, 0};
+        drawToken(0, 10, xRotations[0][2], yRotations[0][2]);
         
-        drawToken(0, 0, xArray, yArray);
-        
-        xArray = new int [] {0, 0, 0, 1};
-        yArray = new int [] {0, 1, 2, 2};
-        
-        drawToken(0, 5, xArray, yArray);
+        drawToken(0, 15, xRotations[0][3], yRotations[0][3]);
 
-        xArray = new int [] {0, 1, 1, 1};
-        yArray = new int [] {0, 0, 1, 2};
-
-        drawToken(0, 10, xArray, yArray);
+        drawToken(5, 0, xRotations[1][0], yRotations[1][0]);
         
-        
-        xArray = new int [] {0, 1, 2, 2};
-        yArray = new int [] {1, 1, 0, 1};
+        drawToken(5, 5, xRotations[1][1], yRotations[1][1]);
 
-        drawToken(5, 10, xArray, yArray);
-        //eraseCell(5, 10);
+        drawToken(5, 10, xRotations[1][2], yRotations[1][2]);
+
+        drawToken(5, 15, xRotations[1][3], yRotations[1][3]);
     }
 
     //Draws square cell to screen
