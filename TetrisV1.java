@@ -10,7 +10,7 @@ import javax.swing.*;
 
 public class TetrisV1 {
   
-    public static void main(String [] args) {
+    public static void main(String [] args) throws Exception{
         
         //Create new window
         JFrame window = new JFrame("TetrisV1");

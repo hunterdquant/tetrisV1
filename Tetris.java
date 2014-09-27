@@ -18,27 +18,35 @@ public class Tetris extends JPanel {
         //Set up window properties
         this.setPreferredSize(new java.awt.Dimension(640, 480));
         this.setBackground(Color.GREEN);
+
+        //Relative position arrays
+        int [] xArray = {0, 0, 1, 2};
+        int [] yArray = {0, 1, 0, 0};
+        
+        drawToken(0, 0, xArray, yArray);
+
+        drawToken(5, 10, xArray, yArray);
     }
 
     //Draws square cell to screen
-    public void drawCell(Graphics g, int x, int y) {
+    public void drawCell(int x, int y) {
 
         gameBoard[x][y] = 1;
     }
 
     //Erases cell at x and y
-    public void eraseCell(Graphics g, int x, int y) {
+    public void eraseCell(int x, int y) {
 
         gameBoard[x][y] = 0;
     }
 
     //Draws a token to the screen
-    public void drawToken(Graphics g, int x, int y) {
+    public void drawToken(int x, int y, int [] xArray, int [] yArray) {
+    
+        for (int i = 0; i < 4; i++) {
 
-        drawCell(g, x+0, y+0);
-        drawCell(g, x+0, y+1);
-        drawCell(g, x+1, y+0);
-        drawCell(g, x+2, y+0);
+            drawCell(x+xArray[i], y+yArray[i]);
+        }
     }
 
     //Draws a red cell with a black border
