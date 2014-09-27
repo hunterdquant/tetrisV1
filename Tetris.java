@@ -19,13 +19,28 @@ public class Tetris extends JPanel {
         this.setPreferredSize(new java.awt.Dimension(640, 480));
         this.setBackground(Color.GREEN);
 
-        //Relative position arrays
+        //Relative position arrays and rotation arrays
         int [] xArray = {0, 0, 1, 2};
         int [] yArray = {0, 1, 0, 0};
         
         drawToken(0, 0, xArray, yArray);
+        
+        xArray = new int [] {0, 0, 0, 1};
+        yArray = new int [] {0, 1, 2, 2};
+        
+        drawToken(0, 5, xArray, yArray);
+
+        xArray = new int [] {0, 1, 1, 1};
+        yArray = new int [] {0, 0, 1, 2};
+
+        drawToken(0, 10, xArray, yArray);
+        
+        
+        xArray = new int [] {0, 1, 2, 2};
+        yArray = new int [] {1, 1, 0, 1};
 
         drawToken(5, 10, xArray, yArray);
+        //eraseCell(5, 10);
     }
 
     //Draws square cell to screen
