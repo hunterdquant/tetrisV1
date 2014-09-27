@@ -11,16 +11,26 @@ import java.awt.*;
 public class Tetris extends JPanel {
 
     private int [][] gameBoard = new int[10][20];   
-    
+
     //Rotations for each Token
     //USE: [Token][Rotation]
     private int [][][] xRotations = {
-        { {0, 0, 1, 2}, {0, 0, 0, 1}, {2, 0, 1, 2}, {0, 1, 1, 1} },
-        { {0, 0, 1, 1}, {1, 2, 0, 1}, {0, 0, 1, 1}, {1, 2, 0, 1} }
+        { {0,0,1,2}, {0,0,0,1}, {2,0,1,2}, {0,1,1,1} },
+        { {0,0,1,1}, {1,2,0,1}, {0,0,1,1}, {1,2,0,1} },
+        { {1,1,0,0}, {0,1,1,2}, {1,1,0,0}, {0,1,1,2} },
+        { {0,1,2,2}, {0,1,0,0}, {0,0,1,2}, {1,1,0,1} },
+        { {1,0,1,2}, {1,0,1,1}, {0,1,1,2}, {0,0,1,0} },
+        { {0,1,0,1}, {0,1,0,1}, {0,1,0,1}, {0,1,0,1} },  
+        { {0,1,2,3}, {0,0,0,0}, {0,1,2,3}, {0,0,0,0} }
     };
     private int [][][] yRotations = {
-        { {0, 1, 0, 0}, {0, 1, 2, 2}, {0, 1, 1, 1}, {0, 0, 1, 2} },
-        { {0, 1, 1, 2}, {0, 0, 1, 1}, {0, 1, 1, 2}, {0, 0, 1, 1} }
+        { {0,1,0,0}, {0,1,2,2}, {0,1,1,1}, {0,0,1,2} },
+        { {0,1,1,2}, {0,0,1,1}, {0,1,1,2}, {0,0,1,1} },
+        { {0,1,1,2}, {0,0,1,1}, {0,1,1,2}, {0,0,1,1} },
+        { {0,0,0,1}, {0,0,1,2}, {0,1,1,1}, {0,1,2,2} },
+        { {0,1,1,1}, {0,1,1,2}, {0,0,1,0}, {0,1,1,2} },
+        { {0,0,1,1}, {0,0,1,1}, {0,0,1,1}, {0,0,1,1} },
+        { {0,0,0,0}, {0,1,2,3}, {0,0,0,0}, {0,1,2,3} }
     };
 
     //Initializes the JPanel   
@@ -32,19 +42,17 @@ public class Tetris extends JPanel {
         
         drawToken(0, 0, xRotations[0][0], yRotations[0][0]);
         
-        drawToken(0, 5, xRotations[0][1], yRotations[0][1]);
+        drawToken(0, 5, xRotations[1][0], yRotations[1][0]);
 
-        drawToken(0, 10, xRotations[0][2], yRotations[0][2]);
+        drawToken(0, 10, xRotations[2][0], yRotations[2][0]);
         
-        drawToken(0, 15, xRotations[0][3], yRotations[0][3]);
+        drawToken(0, 15, xRotations[3][0], yRotations[3][0]);
 
-        drawToken(5, 0, xRotations[1][0], yRotations[1][0]);
+        drawToken(5, 0, xRotations[4][0], yRotations[4][0]);
         
-        drawToken(5, 5, xRotations[1][1], yRotations[1][1]);
+        drawToken(5, 5, xRotations[5][0], yRotations[5][0]);
 
-        drawToken(5, 10, xRotations[1][2], yRotations[1][2]);
-
-        drawToken(5, 15, xRotations[1][3], yRotations[1][3]);
+        drawToken(5, 10, xRotations[6][0], yRotations[6][0]);
     }
 
     //Draws square cell to screen
