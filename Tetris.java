@@ -135,6 +135,7 @@ public class Tetris extends JPanel implements KeyListener {
         }
 
         clearRow(complete);
+        shiftDown(complete);
     }
 
     public void clearRow(int [] complete) {
@@ -151,6 +152,20 @@ public class Tetris extends JPanel implements KeyListener {
         }
 
         repaint();
+    }
+
+    public void shiftDown(int [] complete) {
+    
+        for (int i = 0; i < complete.length; i++) {
+        
+            if (complete[i] == 1) {
+            
+                for (int y = i; y >= 1; y--) {
+                    
+                    for (int x = 0; x < 10; x++) gameBoard[x][y] = gameBoard[x][y-1];
+                }
+            }
+        }
     }
 
     public void fallingToken() {
