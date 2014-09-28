@@ -7,8 +7,18 @@
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 
-public class Tetris extends JPanel {
+public class Tetris extends JPanel implements KeyListener {
+    
+    
+
+    boolean gameOver = false;
+
+    private boolean right = false;
+    private boolean left = false;
+    private boolean down = false;
+    private boolean space = false;
 
     private int [][] gameBoard = new int[10][20];   
 
@@ -37,8 +47,8 @@ public class Tetris extends JPanel {
     public void initialize() {
 
         //Set up window properties
-        this.setPreferredSize(new java.awt.Dimension(640, 480));
-        this.setBackground(Color.GREEN);
+        this.setPreferredSize(new java.awt.Dimension(240, 510));
+        this.setBackground(Color.BLUE);
     }
 
     //Draws square cell to screen
@@ -57,8 +67,6 @@ public class Tetris extends JPanel {
         }
     }
 
-
-
     //Erases cell at x and y
     public void eraseCell(int x, int y) {
         
@@ -73,8 +81,6 @@ public class Tetris extends JPanel {
             eraseCell(x+xArray[i], y+yArray[i]);
         }
     }
-
-
 
     public boolean isPosValid(int x, int y, int tokNum, int rotNum) {
         
@@ -101,44 +107,106 @@ public class Tetris extends JPanel {
         return true;
     }
 
-    public void fallingToken() {
+    public void gameOverMessage() {
+        
+        JLabel gameOver = new JLabel("NOOB");
+        
+        gameOver.setForeground(Color.white);
+        gameOver.setBounds(100, 475, 200, 30);
+        add(gameOver);
+        repaint();
+    }
+
+    public void checkForComplete() {
     
+        int [] complete = new int[20];
+        
+        //rows
+        for (int y = 0; y < 20; y++) {
+        
+            int cell = 0;
+
+            //Columns
+            for (int x = 0; x < 10; x++) {
+
+                if (gameBoard[x][y] == 1) cell++;
+                if (cell == 10) complete[y] = 1;
+            }
+        }
+
+        clearRow(complete);
+    }
+
+    public void clearRow(int [] complete) {
+    
+        for (int y = 0; y < complete.length; y++) {
+            
+            if (complete[y] == 1) {
+            
+                for (int x = 0; x < 10; x++) {
+
+                    gameBoard[x][y] = 0;
+                }
+            }
+        }
+
+        repaint();
+    }
+
+    public void fallingToken() {
+
         int x = 5;
         int y = 0;
         int tokNum, rotNum;
-        
-        //Loop till you have a valid position
-        while(true) {
-        
-            tokNum = (int) (7*Math.random());
-            rotNum = (int) (4*Math.random());
 
-            if (isPosValid(x, y, tokNum, rotNum)) break;
-        }
-        
+
+        tokNum = (int) (7*Math.random());
+        rotNum = (int) (4*Math.random());
+
+
         //Get the data for the token
         int [] xArray = xRotations[tokNum][rotNum];
         int [] yArray = yRotations[tokNum][rotNum];
         
+        if (!isPosValid(x, y, tokNum, rotNum)) {
+            
+            gameOver = true;
+            drawToken(x, y, xArray, yArray);
+            repaint();
+
+            return;
+        }
+
         //Draw and repaint
         drawToken(x, y, xArray, yArray);
         repaint();
-
+        
+        int frame = 0;
         boolean hitFloor = false;
         
         //While you haven't hit the floor
         while (!hitFloor) {
         
-            try{Thread.sleep(500); } catch (Exception ignore) {}
+            try{Thread.sleep(50); } catch (Exception ignore) {}
 
             //Erase the token
             eraseToken(x, y, xArray, yArray);
             repaint();
 
-            //Increase y so it's falling
-            y += 1;
+            if (left && isPosValid(x-1, y, tokNum, rotNum)) x -= 1;
+            if (right && isPosValid(x+1, y, tokNum, rotNum)) x += 1;
+            if (down && isPosValid(x, y+1, tokNum, rotNum)) y += 1;
+            if (space && isPosValid(x, y, tokNum, (rotNum+1)%4)) {
+                
+                rotNum = (rotNum+1) % 4;
+                xArray = xRotations[tokNum][rotNum];
+                yArray = yRotations[tokNum][rotNum];
 
-            if(!isPosValid(x, y, tokNum, rotNum)) { 
+                space = false;
+            }
+
+            if (frame % 15 == 0) y += 1;
+            if (!isPosValid(x, y, tokNum, rotNum)) { 
                 
                 y -= 1; 
                 hitFloor = true; 
@@ -147,7 +215,31 @@ public class Tetris extends JPanel {
             //Re-draw
             drawToken(x, y, xArray, yArray);
             repaint();
+
+            frame++;
         }
+    }
+
+    public void keyPressed (KeyEvent event) {
+    
+        if (event.getKeyCode() == 37) left = true;
+        if (event.getKeyCode() == 39) right = true;
+        if (event.getKeyCode() == 40) down = true;
+        if (event.getKeyCode() == 32) space = true;
+    }
+
+
+    public void keyReleased (KeyEvent event) {
+    
+        if (event.getKeyCode() == 37) left = false;
+        if (event.getKeyCode() == 39) right = false;
+        if (event.getKeyCode() == 40) down = false;
+        if (event.getKeyCode() == 32) space = false;
+    }
+
+
+    public void keyTyped (KeyEvent event) {
+    
     }
 
     public void testTokens() {

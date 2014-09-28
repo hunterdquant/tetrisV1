@@ -25,8 +25,17 @@ public class TetrisV1 {
         window.pack();
         window.setVisible(true);
 
-        try{Thread.sleep(1000); } catch (Exception ignore) {}
-        tetris.fallingToken();
+        try {Thread.sleep(1000); } catch (Exception ignore) {}
+        
+        window.addKeyListener(tetris);
+        
+        tetris.gameOver = false;
+        while (!tetris.gameOver) {
+
+            tetris.fallingToken();
+            tetris.checkForComplete();
+        }
+        tetris.gameOverMessage();
     }
 }
 
