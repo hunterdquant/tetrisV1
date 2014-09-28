@@ -14,11 +14,14 @@ public class Tetris extends JPanel implements KeyListener {
     
 
     boolean gameOver = false;
-
     private boolean right = false;
     private boolean left = false;
     private boolean down = false;
     private boolean space = false;
+
+    private int score = 0;
+    private int lines = 0;
+    private int level = 0;
 
     private int [][] gameBoard = new int[10][20];   
 
@@ -43,12 +46,28 @@ public class Tetris extends JPanel implements KeyListener {
         { {0,0,0,0}, {0,1,2,3}, {0,0,0,0}, {0,1,2,3} }
     };
 
+
+    JLabel scoreLabel = new JLabel("SCORE: 0");
+    JLabel levelLabel = new JLabel("LEVEL: 0");
+
     //Initializes the JPanel   
     public void initialize() {
 
         //Set up window properties
         this.setPreferredSize(new java.awt.Dimension(240, 510));
         this.setBackground(Color.BLUE);
+
+        setLayout(null);
+
+        scoreLabel.setForeground(Color.white);
+        scoreLabel.setBounds(10, 475, 200, 30);
+        add(scoreLabel);
+
+        levelLabel.setForeground(Color.white);
+        levelLabel.setBounds(170, 475, 200, 30);
+        add(levelLabel);
+        
+        repaint();
     }
 
     //Draws square cell to screen
@@ -107,6 +126,30 @@ public class Tetris extends JPanel implements KeyListener {
         return true;
     }
 
+    public void scoreTally(int [] complete) {
+    
+        int points = 10;
+        for (int i = 0; i < complete.length; i++) {
+            
+            if (complete[i] == 1) {
+                
+                lines += 1;
+                score += points;
+                points *= 2;
+            }
+        }
+
+        level = lines/3;
+        if (level > 30) {
+            
+            lines = 0;
+            level = 0;
+        }
+
+        scoreLabel.setText("SCORE: " + score);
+        levelLabel.setText("LEVEL: " + level);
+    }
+
     public void gameOverMessage() {
         
         JLabel gameOver = new JLabel("NOOB");
@@ -136,22 +179,26 @@ public class Tetris extends JPanel implements KeyListener {
 
         clearRow(complete);
         shiftDown(complete);
+        scoreTally(complete);
     }
 
     public void clearRow(int [] complete) {
-    
-        for (int y = 0; y < complete.length; y++) {
-            
-            if (complete[y] == 1) {
-            
-                for (int x = 0; x < 10; x++) {
+        for (int blink = 0; blink < 5; blink++) {
+            for (int y = 0; y < complete.length; y++) {
 
-                    gameBoard[x][y] = 0;
+                if (complete[y] == 1) {
+
+                    for (int x = 0; x < 10; x++) {
+
+                        gameBoard[x][y] = 1 - gameBoard[x][y];
+                    }
                 }
             }
-        }
 
-        repaint();
+            repaint();
+            try { Thread.sleep(100); } catch (Exception ignore) {}
+
+        }
     }
 
     public void shiftDown(int [] complete) {
@@ -219,8 +266,9 @@ public class Tetris extends JPanel implements KeyListener {
 
                 space = false;
             }
-
-            if (frame % 15 == 0) y += 1;
+            
+            int n = 31 - level;
+            if (frame % n == 0) y += 1;
             if (!isPosValid(x, y, tokNum, rotNum)) { 
                 
                 y -= 1; 
@@ -234,7 +282,8 @@ public class Tetris extends JPanel implements KeyListener {
             frame++;
         }
     }
-
+    
+    //Key pressed
     public void keyPressed (KeyEvent event) {
     
         if (event.getKeyCode() == 37) left = true;
@@ -243,7 +292,7 @@ public class Tetris extends JPanel implements KeyListener {
         if (event.getKeyCode() == 32) space = true;
     }
 
-
+    //Key release
     public void keyReleased (KeyEvent event) {
     
         if (event.getKeyCode() == 37) left = false;
