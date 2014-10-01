@@ -221,10 +221,8 @@ public class Tetris extends JPanel implements KeyListener {
         int y = 0;
         int tokNum, rotNum;
 
-
         tokNum = (int) (7*Math.random());
         rotNum = (int) (4*Math.random());
-
 
         //Get the data for the token
         int [] xArray = xRotations[tokNum][rotNum];
@@ -357,4 +355,5 @@ public class Tetris extends JPanel implements KeyListener {
         }    
     }
 }
+
 
