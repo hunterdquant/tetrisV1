@@ -12,7 +12,7 @@ import java.awt.event.*;
 public class Tetris extends JPanel implements KeyListener {
     
     
-
+	//Flag for gameover.
     boolean gameOver = false;
     private boolean right = false;
     private boolean left = false;
